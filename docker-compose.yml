@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+  postgres: 
+    image: postgres:12.15
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=jsdeveloper
+      - POSTGRES_DB=reapnsow
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres-db:/var/lib/postgresql/data
+
+  redis:
+    image: redis:5.0.7
+    restart: always
+    ports:
+      - "6379:6379"
+  
+  rabbitmq:
+    image: rabbitmq:3.11.16
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=rabbitmq
+      - RABBITMQ_DEFAULT_PASS=rabbitmq
+    ports:
+      - "15672:15672"
+    volumes:
+      - ./rabbitmq-data:/var/lib/rabbitmq 
+  
+  backend:
+    container_name: reapnsow_backend
+    restart: unless-stopped
+    image: reapnsow_backend_img:1.0
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+  
+  frontend:
+    container_name: reapnsow_frontend
+    restart: unless-stopped
+    image: reapnsow_frontend_img:1.0
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+
