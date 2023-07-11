@@ -9,4 +9,4 @@ RUN npm install
 
 COPY . .
 
-CMD ["sh", "-c", "npm start"]
+CMD ["sh", "-c", "redis-server && npm start"]

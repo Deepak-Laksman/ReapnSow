@@ -2,7 +2,7 @@ const cron = require("node-cron");
 const pool = require("../db.js");
 const fs = require("fs");
 
-const data = fs.readFileSync('/home/ecom-deepakj1/Desktop/ReapnSow/backend/crons/badwords.txt',
+const data = fs.readFileSync(__dirname + '/badwords.txt',
     { encoding: 'utf8', flag: 'r' }).split("\n");
 
 const badWords = new Set();
