@@ -39,8 +39,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
-    depends_on:
-      - postgres
+    # depends_on:
+    #   - postgres
   
   frontend:
     container_name: reapnsow_frontend
