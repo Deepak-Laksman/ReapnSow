@@ -1,6 +1,6 @@
 FROM node:20.1.0
 
-WORKDIR /Desktop/DockerizedProjects/ReapnSow/Frontend
+WORKDIR /src/frontend
 
 COPY package.json .
 COPY package-lock.json .

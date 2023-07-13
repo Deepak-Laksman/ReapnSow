@@ -1,6 +1,6 @@
 FROM node:12.16.1
 
-WORKDIR /Desktop/DockerizedProjects/ReapnSow/Backend
+WORKDIR /src/backend
 
 COPY package.json .
 COPY package-lock.json .
@@ -9,4 +9,4 @@ RUN npm install
 
 COPY . .
 
-CMD ["sh", "-c", "redis-server && npm start"]
+CMD ["sh", "-c", "npm start"]

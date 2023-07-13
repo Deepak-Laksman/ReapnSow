@@ -3,26 +3,19 @@ version: "3.8"
 services:
   postgres: 
     image: postgres:12.15
-    restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=jsdeveloper
-      - POSTGRES_DB=reapnsow
-    volumes:
-      - ./postgres-db:/var/lib/postgresql/data
 
   redis:
     image: redis:5.0.7
-    restart: always
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 1s
+      timeout: 2s
+      retries: 10
   
   rabbitmq:
     image: rabbitmq:3.11.16
-    restart: always
-    environment:
-      - RABBITMQ_DEFAULT_USER=rabbitmq
-      - RABBITMQ_DEFAULT_PASS=rabbitmq
-    volumes:
-      - ./rabbitmq-data:/var/lib/rabbitmq 
+
   
   backend:
     container_name: reapnsow_backend
@@ -33,10 +26,17 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
-    depends_on:
-      - postgres
+    links:
       - redis
       - rabbitmq
+      - postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redsi:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
   
   frontend:
     container_name: reapnsow_frontend
