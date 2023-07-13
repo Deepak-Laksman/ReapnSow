@@ -33,7 +33,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      redsi:
+      redis:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
